@@ -1,8 +1,8 @@
-#Voltorb Flip
+# Voltorb Flip
 ###### Author: nmcleish
 
 
-##How to play
+## How to play
 
 Every box contains a value, from 0 to 3.
 
@@ -24,9 +24,9 @@ If you clicked the wrong box, just keep the mouse button pressed and move your m
 
 Refresh the page to start a new game (level 1 and total score 0).
 
-##Files:
-###Board.py: 
+## Files:
+### Board.py: 
 This file generates the playing board.
 
-###Main.py: 
+### Main.py: 
 This is the main file of the program.
