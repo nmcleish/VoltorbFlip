@@ -25,6 +25,7 @@ class Game:
                 self.level_coins *= result
 
                 if self.num_multipliers == 0:
+                    self.total_coins += self.level_coins
                     status = "Level Success"
         elif result == 0:
             self.total_coins += self.level_coins
@@ -37,6 +38,9 @@ class Game:
     # Gets the value in a space
     def get_space(self, space):
         return self.board.check_space(space)
+
+    def get_level(self):
+        return self.level
 
     # Makes a new game board
     def new_board(self):

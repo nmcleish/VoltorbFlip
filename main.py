@@ -54,6 +54,34 @@ def text_objects(text, font, color):
     return textSurface, textSurface.get_rect()
 
 
+def update_level(level):
+    pygame.draw.rect(screen, background_color,
+                     pygame.Rect(200, 80, 90, 15))
+    TextSurf, TextRect = text_objects(str(level), nav_font, black)
+    screen.blit(TextSurf, (200, 80))
+
+
+def update_coins(coins):
+    pygame.draw.rect(screen, background_color,
+                     pygame.Rect(200, 60, 90, 15))
+    TextSurf, TextRect = text_objects(str(coins), nav_font, black)
+    screen.blit(TextSurf, (200, 60))
+
+
+def update_total_coins(total_coins):
+    pygame.draw.rect(screen, background_color,
+                     pygame.Rect(200, 40, 90, 15))
+    TextSurf, TextRect = text_objects(str(total_coins), nav_font, black)
+    screen.blit(TextSurf, (200, 40))
+
+
+def update_status(status):
+    pygame.draw.rect(screen, background_color,
+                     pygame.Rect(450, 100, 120, 15))
+    TextSurf, TextRect = text_objects(status, nav_font, black)
+    screen.blit(TextSurf, (450, 100))
+
+
 # TODO: Add game instructions
 # This is the main menu for the game
 def game_intro():
@@ -175,7 +203,7 @@ def draw_game_board(game):
     return board_spaces
 
 
-# TODO: Add scores and level to screen and add quit button
+# TODO: Add quit button
 def run_game():
 
     # Fill the background
@@ -201,6 +229,15 @@ def run_game():
     TextSurf, TextRect = text_objects("Level:", nav_font, black)
     screen.blit(TextSurf, (60, 80))
 
+    # Show Total Coins
+    update_total_coins(0)
+
+    # Show Coins
+    update_coins(0)
+
+    # Show level
+    update_level(1)
+
     # Run until the user asks to quit
     running = True
     level_complete = False
@@ -209,9 +246,11 @@ def run_game():
         # Did the user click the window close button?
         for event in pygame.event.get():
             print(event)
+
             if event.type == pygame.QUIT:
                 running = False
-                # checks if a mouse is clicked
+
+            # checks if a mouse is clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if not level_complete:
                     for square in board_spaces.keys():
@@ -220,6 +259,9 @@ def run_game():
                             print(board_spaces[square])
                             del board_spaces[square]
                             print(result)
+
+                            # update coins
+                            update_coins(result[1])
 
                             pygame.draw.rect(screen, white,
                                              pygame.Rect(square[0], square[1], square_size, square_size))
@@ -234,17 +276,17 @@ def run_game():
 
                             if result[3] != "":
                                 level_complete = True
+                                update_total_coins(result[2])
 
                                 # Game Status
-                                TextSurf, TextRect = text_objects(result[3], nav_font, black)
-                                screen.blit(TextSurf, (450, 100))
+                                update_status(result[3])
+
 
                                 # New Game Button
                                 pygame.draw.rect(screen, button_color, pygame.Rect(450, 150, 100, 50))
                                 TextSurf, TextRect = text_objects("New Game", nav_font, black)
                                 TextRect.center = (450 + 50, 150 + 25)
                                 screen.blit(TextSurf, TextRect)
-
 
                                 for board_space in board_spaces.keys():
                                     pygame.draw.rect(screen, white,
@@ -260,9 +302,18 @@ def run_game():
                             break
                 else:
                     if 450 <= mouse[0] <= 450 + 100 and 150 <= mouse[1] <= 150 + 40:
+                        pygame.draw.rect(screen, background_color, pygame.Rect(450, 150, 100, 50), 2)
                         game.new_board()
                         board_spaces = draw_game_board(game)
                         level_complete = False
+
+                        # Erase Coins
+                        update_coins(0)
+                        update_level(game.get_level())
+                        update_status("")
+
+                        pygame.draw.rect(screen, background_color, pygame.Rect(450, 150, 100, 50))
+
 
                             # draw whole board
         mouse = pygame.mouse.get_pos()
@@ -274,6 +325,12 @@ def run_game():
                     pygame.draw.rect(screen, black, pygame.Rect(square[0] - 2, square[1] - 2, square_size + 4, square_size + 4), 1)
                 else:
                     pygame.draw.rect(screen, white, pygame.Rect(square[0] - 2, square[1] - 2, square_size + 4, square_size + 4), 1)
+        else:
+            if 450 <= mouse[0] <= 450 + 100 and 150 <= mouse[1] <= 150 + 40:
+                pygame.draw.rect(screen, black, pygame.Rect(450, 150, 100, 50), 2)
+            else:
+                pygame.draw.rect(screen, background_color, pygame.Rect(450, 150, 100, 50), 2)
+
 
         pygame.display.update()
 
