@@ -16,6 +16,7 @@ class Game:
         result = self.board.check_space(space)
         status = ""
         if result > 1:
+            self.total_multipliers += 1
             self.num_multipliers -= 1
 
             if self.level_coins == 0:
@@ -28,6 +29,8 @@ class Game:
         elif result == 0:
             self.total_coins += self.level_coins
             status = "Game Over"
+        else:
+            self.total_multipliers += 1
         space_result = (result, self.level_coins, self.total_coins, status)
         return space_result
 
@@ -42,7 +45,7 @@ class Game:
         elif self.total_multipliers < self.num_voltorbs:
             if self.total_multipliers == 0:
                 self.level = 1
-            if self.total_multipliers < self.level:
+            elif self.total_multipliers < self.level:
                 self.level = self.total_multipliers
 
         self.board = board.Board(self.level)
@@ -50,5 +53,4 @@ class Game:
         self.num_multipliers = self.board.get_num_multipliers()
         self.num_voltorbs = self.board.get_num_voltorbs()
         self.total_multipliers = 0
-        self.level_coins = 0
 

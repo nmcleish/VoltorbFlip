@@ -34,7 +34,6 @@ def get_level_board(level):
 
 class Board:
     def __init__(self, level):
-
         self.level_board = get_level_board(level)
 
         self.spaces = {}
@@ -51,6 +50,7 @@ class Board:
 
     # determines how many voltorbs are in each row
     def calculate_row_voltorbs(self):
+        print(self.level_board)
         num_voltorbs = self.level_board[2]
         row = 0
         while num_voltorbs > 0:
